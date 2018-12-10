@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
-                color: Colors.blue,
+                color: Colors.green,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -84,6 +84,23 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
+             SizedBox(
+              height: 20.0,
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {},
+                  child: Text("Login"),
+                ),
+                RaisedButton(
+                  onPressed: () {},
+                  child: Text("Signup"),
+                ),
+              ],
+            )
           ],
         ),
       ),
