@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-             SizedBox(
+            SizedBox(
               height: 20.0,
             ),
             ButtonBar(
