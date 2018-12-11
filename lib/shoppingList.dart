@@ -8,6 +8,7 @@ class ShoppingList extends StatefulWidget {
 
 class _ShoppingListState extends State<ShoppingList> {
   String item;
+  String currentItem;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,11 @@ class _ShoppingListState extends State<ShoppingList> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text("Enter an item"),
+                    title: Text("Enter an item to purchase"),
                     content: TextField(
+                      autofocus: true,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
                       onChanged: (String value) {
                         setState(() {
                           this.item = value;
@@ -33,56 +37,89 @@ class _ShoppingListState extends State<ShoppingList> {
                     ),
                     actions: <Widget>[
                       FlatButton(
-                        child: Icon(Icons.add),
+                        child: Icon(Icons.add_shopping_cart),
                         onPressed: () {
                           Firestore.instance
                               .runTransaction((Transaction transaction) async {
                             CollectionReference reference =
                                 Firestore.instance.collection('shopping_list');
-                            await reference.add({"name": item, "done": "Pending"});
+                            await reference
+                                .add({"name": item, "done": "Pending"});
                           });
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
-                      )
+                      ),
+                      FlatButton(
+                        child: Icon(Icons.cancel),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ],
                   );
                 });
           },
           child: Icon(Icons.add_shopping_cart),
         ),
-        body: List1(),
-      ),
-    );
-  }
-}
+        body: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('shopping_list').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return CircularProgressIndicator();
+              default:
+                return ListView(
+                  children:
+                      snapshot.data.documents.map((DocumentSnapshot document) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                        "Purchased " + document['name'] + " ?"),
+                                    //content: Text("Mark Complete?"),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Icon(Icons.done),
+                                        onPressed: () {
+                                          // Firebase delete code
 
-class List1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('shopping_list').snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
-          default:
-            return ListView(
-              children:
-                  snapshot.data.documents.map((DocumentSnapshot document) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    child: ListTile(
-                      title: Text(document['name']),
-                      subtitle: Text(document['done']),
-                    ),
-                  ),
+                                          Firestore.instance
+                                              .collection('shopping_list')
+                                              .document(document.documentID)
+                                              .delete();
+
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Icon(Icons.cancel),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          title: Text(document['name']),
+                          subtitle: Text(document['done']),
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
-            );
-        }
-      },
+            }
+          },
+        ),
+      ),
     );
   }
 }
