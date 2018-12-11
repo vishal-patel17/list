@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:async/async.dart';
 
 class ShoppingList extends StatefulWidget {
   _ShoppingListState createState() => _ShoppingListState();
@@ -8,7 +7,6 @@ class ShoppingList extends StatefulWidget {
 
 class _ShoppingListState extends State<ShoppingList> {
   String item;
-  String currentItem;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +41,7 @@ class _ShoppingListState extends State<ShoppingList> {
                               .runTransaction((Transaction transaction) async {
                             CollectionReference reference =
                                 Firestore.instance.collection('shopping_list');
-                            await reference
-                                .add({"name": item, "done": "Pending"});
+                            await reference.add({"name": item});
                           });
                           Navigator.of(context).pop();
                         },
@@ -89,8 +86,6 @@ class _ShoppingListState extends State<ShoppingList> {
                                       FlatButton(
                                         child: Icon(Icons.done),
                                         onPressed: () {
-                                          // Firebase delete code
-
                                           Firestore.instance
                                               .collection('shopping_list')
                                               .document(document.documentID)
@@ -109,8 +104,13 @@ class _ShoppingListState extends State<ShoppingList> {
                                   );
                                 });
                           },
-                          title: Text(document['name']),
-                          subtitle: Text(document['done']),
+                          title: Text(
+                            document['name'],
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
                         ),
                       ),
                     );
