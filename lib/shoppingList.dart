@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 class ShoppingList extends StatefulWidget {
   _ShoppingListState createState() => _ShoppingListState();
 }
 
 class _ShoppingListState extends State<ShoppingList> {
+
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+
+  void initState() { 
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message){
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message){
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message){
+        print('on launch $message');
+      },
+    );
+    _firebaseMessaging.getToken().then((token){
+      print(token);
+    });
+    
+  }
+
   String item;
 
   @override
@@ -81,7 +105,6 @@ class _ShoppingListState extends State<ShoppingList> {
                                   return AlertDialog(
                                     title: Text(
                                         "Purchased " + document['name'] + " ?"),
-                                    //content: Text("Mark Complete?"),
                                     actions: <Widget>[
                                       FlatButton(
                                         child: Icon(Icons.done),
