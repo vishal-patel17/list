@@ -23,7 +23,8 @@ exports.createItem = functions.firestore.document('shopping_list/{shopping_listI
             sound: 'default'
         }
     }
-    return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+    // return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+    return admin.messaging().sendToTopic('shopping_list', payload);
 });
 
 exports.deleteItem = functions.firestore.document('shopping_list/{shopping_listID}').onDelete((snap, context) => {
@@ -40,7 +41,9 @@ exports.deleteItem = functions.firestore.document('shopping_list/{shopping_listI
             sound: 'default'
         }
     }
-    return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+    // return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+
+    return admin.messaging().sendToTopic('shopping_list', payload);
 });
 
 exports.createTask = functions.firestore.document('task_list/{task_listID}').onCreate((snap, context) => {
@@ -57,7 +60,9 @@ exports.createTask = functions.firestore.document('task_list/{task_listID}').onC
             sound: 'default'
         }
     }
-    return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+    // return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+
+    return admin.messaging().sendToTopic('task_list', payload);
 });
 
 exports.deleteTask = functions.firestore.document('task_list/{task_listID}').onDelete((snap, context) => {
@@ -74,5 +79,7 @@ exports.deleteTask = functions.firestore.document('task_list/{task_listID}').onD
             sound: 'default'
         }
     }
-    return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+    // return admin.messaging().sendToDevice('cdqT4aFugPs:APA91bGXicp_CTsbp3Hm89xP8VZAqv7VXDijc0ld3hScJXgw2jYILeM5Ri8yxeFpLj_zWsJzJEegoUt3LM2iKu6PGilDnmE3Zn6KDbz04W5y3ZpbstfAj8RIfRjQ-8UgcKOjAYndKsEC', payload);
+
+    return admin.messaging().sendToTopic('task_list', payload);
 });

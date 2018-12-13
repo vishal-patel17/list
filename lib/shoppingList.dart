@@ -2,32 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-
 class ShoppingList extends StatefulWidget {
   _ShoppingListState createState() => _ShoppingListState();
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
-  void initState() { 
+  void initState() {
     super.initState();
     _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message){
+      onMessage: (Map<String, dynamic> message) {
         print('on message $message');
       },
-      onResume: (Map<String, dynamic> message){
+      onResume: (Map<String, dynamic> message) {
         print('on resume $message');
       },
-      onLaunch: (Map<String, dynamic> message){
+      onLaunch: (Map<String, dynamic> message) {
         print('on launch $message');
       },
     );
     // _firebaseMessaging.getToken().then((token){
     //   print(token);
     // });
-    
+    _firebaseMessaging.subscribeToTopic('shopping_list');
   }
 
   String item;

@@ -7,31 +7,31 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
-FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-
-  void initState() { 
+  void initState() {
     super.initState();
     _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message){
+      onMessage: (Map<String, dynamic> message) {
         print('on message $message');
       },
-      onResume: (Map<String, dynamic> message){
+      onResume: (Map<String, dynamic> message) {
         print('on resume $message');
       },
-      onLaunch: (Map<String, dynamic> message){
+      onLaunch: (Map<String, dynamic> message) {
         print('on launch $message');
       },
     );
     // _firebaseMessaging.getToken().then((token){
     //   print(token);
     // });
-    
+
+    _firebaseMessaging.subscribeToTopic('task_list');
   }
 
   String item;
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
