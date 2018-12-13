@@ -23,9 +23,9 @@ FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
         print('on launch $message');
       },
     );
-    _firebaseMessaging.getToken().then((token){
-      print(token);
-    });
+    // _firebaseMessaging.getToken().then((token){
+    //   print(token);
+    // });
     
   }
 
@@ -88,7 +88,7 @@ FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               default:
                 return ListView(
                   children:

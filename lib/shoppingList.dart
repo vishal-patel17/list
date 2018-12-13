@@ -24,9 +24,9 @@ class _ShoppingListState extends State<ShoppingList> {
         print('on launch $message');
       },
     );
-    _firebaseMessaging.getToken().then((token){
-      print(token);
-    });
+    // _firebaseMessaging.getToken().then((token){
+    //   print(token);
+    // });
     
   }
 
@@ -89,7 +89,7 @@ class _ShoppingListState extends State<ShoppingList> {
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               default:
                 return ListView(
                   children:
