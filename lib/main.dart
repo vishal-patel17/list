@@ -3,6 +3,7 @@ import './shoppingList.dart';
 import './taskList.dart';
 import './cookingList.dart';
 import './chat.dart';
+import './home.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
         '/chat': (context) => Chat(),
       },
       debugShowCheckedModeBanner: false,
-      home: MyHome(),
+      //home: MyHome(),
+      home: LoginScreen(),
     );
   }
 }
